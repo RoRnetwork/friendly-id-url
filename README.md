@@ -86,4 +86,12 @@ A new "candidates" functionality which makes it easy to set up a list of
   of uglier ids being generated when there are conflicts.
 
 
-  
+  If you want to override the default `-` url with some other format. For example, In the case of changing the `-` as `_` in the url.
+
+  ````ruby
+  #add the following method in model file
+   def normalize_friendly_id(string)
+    super.gsub("-", "_")
+   end
+
+ ````
