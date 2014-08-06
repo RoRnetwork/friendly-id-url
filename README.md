@@ -6,6 +6,22 @@ FriendlyId is the "Swiss Army bulldozer" of slugging and permalink plugins for
 Active Record. It lets you create pretty URLs and work with human-friendly
 strings as if they were numeric ids.
 
+
+If you want change the url `id` with `name` like [railscasts.com](http://railscasts.com/episodes/314-pretty-urls-with-friendlyid)
+
+This is normal `ruby`method. here no need to use any gem. 
+
+Simply add the following `method` into your `model` file.
+
+````ruby
+
+def to_param
+  "#{id}-#{name}".parameterize
+end
+
+````
+But If you want make Pretty URLs without showing the `id` in url, you can follow the below instructions 
+
 ```ruby
 # Gemfile
 gem 'friendly_id'
@@ -95,3 +111,6 @@ A new "candidates" functionality which makes it easy to set up a list of
    end
 
  ````
+## Thanks and Credits
+
+https://github.com/norman/friendly_id
