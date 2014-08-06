@@ -58,3 +58,32 @@ def should_generate_new_friendly_id?
 end
 
 ````
+
+A new "candidates" functionality which makes it easy to set up a list of
+  alternate slugs that can be used to uniquely distinguish records, rather than
+  appending a sequence. For example:
+
+  ```ruby
+  class User < ActiveRecord::Base
+    extend FriendlyId
+    friendly_id :slug_candidates, use: [:slugged, :finders]
+
+    # Try building a slug based on the following fields in
+    # increasing order of specificity.
+    def slug_candidates
+	  [
+	    :name,
+	    [:name, :city],
+	    [:name, :country, :city]    
+	  ]
+	end
+  end
+  ```
+  Now that candidates have been added, FriendlyId no longer uses a numeric
+  sequence to differentiate conflicting slug, but rather a UUID (e.g. something
+  like `2bc08962-b3dd-4f29-b2e6-244710c86106`). This makes the
+  codebase simpler and more reliable when running concurrently, at the expense
+  of uglier ids being generated when there are conflicts.
+
+
+  
