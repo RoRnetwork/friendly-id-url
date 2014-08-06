@@ -10,6 +10,26 @@ strings as if they were numeric ids.
 # Gemfile
 gem 'friendly_id'
 ```
-```shell
+```console
 rails generate friendly_id
 ```
+
+If you want change the url of `User` model , add a field in `User` model as `slug:string:uniq`
+
+````console
+rails g migration AddSlugToUsers slug:string:uniq
+rake db:migrate
+````
+```ruby
+# edit app/models/user.rb
+class User < ActiveRecord# edit app/models/user.rb::Base
+  extend FriendlyId
+  friendly_id :name, use: :slugged #here :name will be used instead of :id in url
+end
+```
+
+```ruby
+# Change User.find to User.friendly.find in your controller
+User.friendly.find(params[:id])
+```
+
