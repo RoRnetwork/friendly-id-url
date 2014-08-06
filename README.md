@@ -33,3 +33,28 @@ end
 User.friendly.find(params[:id])
 ```
 
+Finders are no longer overridden by default. If you want to do friendly finds, you must do `Model.friendly`.find rather than `Model.find`. You can however restore FriendlyId 4-style finders by using the `:finders `addon:
+
+````ruby
+#change into your ../models/user.rb 
+
+friendly_id :name, use: [:slugged, :finders] # you can now do MyClass.find('shan')
+
+#now you can undo the changes from your Users_controller.rb
+
+User.find(params[:id])
+
+````
+
+Normally while updating your `:name` field, `:slug` value won't change. 
+
+To overcome this issue,
+
+add this method into your `user.rb` model file
+
+````ruby
+def should_generate_new_friendly_id?
+  slug.blank? || name_changed?
+end
+
+````
