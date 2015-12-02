@@ -95,6 +95,23 @@ A new "candidates" functionality which makes it easy to set up a list of
 	end
   end
   ```
+  Or  to make sequence number along with slug.
+  
+  ```ruby
+  class User < ActiveRecord::Base
+    extend FriendlyId
+    friendly_id :slug_candidates, use: [:slugged, :finders]
+    def slug_candidates
+      [:name, :name_and_sequence]
+    end
+
+    def name_and_sequence
+      slug = name.to_param
+      sequence = User.where("slug like #{slug}--%").count + 2
+      "#{slug}--#{sequence}"
+    end
+  end
+  ```
   Now that candidates have been added, FriendlyId no longer uses a numeric
   sequence to differentiate conflicting slug, but rather a UUID (e.g. something
   like `2bc08962-b3dd-4f29-b2e6-244710c86106`). This makes the
